@@ -35,7 +35,7 @@ public class BonusIconSpawner : MonoBehaviour
 
             RectTransform rt = bonusIcon.RectTransform;
 
-            setPosition(rt);
+            SetPosition(rt);
 
             activeIcons.Add(bonusIcon);
         }
@@ -67,7 +67,7 @@ public class BonusIconSpawner : MonoBehaviour
         }
     }
 
-    private void setPosition(RectTransform rt)
+    private void SetPosition(RectTransform rt)
     {
         if (activeIcons.Count == 0)
         {

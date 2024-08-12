@@ -8,7 +8,7 @@ public abstract class DisintegratingUnit : MonoBehaviour
     /// <summary>
     /// destroying game object
     /// </summary>
-    protected virtual void disintegrate()
+    protected virtual void Disintegrate()
     {
         if ((object)this != null)
         {

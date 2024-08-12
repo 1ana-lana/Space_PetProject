@@ -39,7 +39,7 @@ public abstract class DyingUnit : MovingUnit
             {
                 if (value <= 0)
                 {
-                    death();
+                    Death();
                 }
                 else
                 {
@@ -62,21 +62,18 @@ public abstract class DyingUnit : MovingUnit
     }
 
     /// <summary>
-    /// Calls OnMurder event
-    /// </summary>
-    protected virtual void riseOnMurder()
-    {
-        if (OnMurder != null) OnMurder(this);
-    }
-
-    /// <summary>
     /// make this unit die
     /// </summary>
-    protected virtual void death()
+    protected virtual void Death()
     {
         isAlive = false;
-        riseOnMurder();
-        disintegrate();
+        CallOnMurderEvent(this);
+        Disintegrate();
+    }
+
+    protected void CallOnMurderEvent(DyingUnit dyingUnit)
+    {
+        OnMurder?.Invoke(dyingUnit);
     }
 
     protected override void Awake()

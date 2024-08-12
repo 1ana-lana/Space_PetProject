@@ -9,13 +9,8 @@ public class PauseMenuManager : GameOverMenuManager
     public void ResumeGame()
     {
         transform.gameObject.SetActive(false);
-        raiseOnDisable();
+        OnDisable();
         Time.timeScale = 1;
-    }
-
-    private void raiseOnDisable()
-    {
-        if (OnDisable != null) OnDisable();
     }
 
     protected override void Update()

@@ -14,14 +14,6 @@ public class FireControlPanel : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        riseOnTouch();
-    }
-
-    /// <summary>
-    /// Calls OnTouch event
-    /// </summary>
-    protected virtual void riseOnTouch()
-    {
-        if (OnTouch != null) OnTouch();
+        OnTouch?.Invoke();
     }
 }

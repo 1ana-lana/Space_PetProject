@@ -41,7 +41,7 @@ public class Ship : DyingUnit
 
                     if (value < 0)
                     {
-                        death();
+                        Death();
                     }
                 }
             }
@@ -75,7 +75,7 @@ public class Ship : DyingUnit
             isReload = value;
             if (!isReload)
             {
-                StartCoroutine(reload());
+                StartCoroutine(Reload());
             }
         }
     }
@@ -95,28 +95,28 @@ public class Ship : DyingUnit
             {
                 case UnitType.MoveSpeedBonus:
                     MoveSpeed += (bonus as IncreaseBonus).BonusValue;
-                    effectCoroutine = StartCoroutine(differedAction(bonus.LifeTime, delegate ()
+                    effectCoroutine = StartCoroutine(DifferedAction(bonus.LifeTime, delegate ()
                     {
                         MoveSpeed = baseMoveSpeed;
                     }));
                     break;
                 case UnitType.ImmortalBonus:
                     immortal = true;
-                    effectCoroutine = StartCoroutine(differedAction(bonus.LifeTime, delegate ()
+                    effectCoroutine = StartCoroutine(DifferedAction(bonus.LifeTime, delegate ()
                     {
                         immortal = false;
                     }));
                     break;
                 case UnitType.ReloadBonus:
                     reloadTime = (bonus as IncreaseBonus).BonusValue;
-                    effectCoroutine = StartCoroutine(differedAction(bonus.LifeTime, delegate ()
+                    effectCoroutine = StartCoroutine(DifferedAction(bonus.LifeTime, delegate ()
                     {
                         reloadTime = baseReloadTime;
                     }));
                     break;
                 case UnitType.FireBallBonus:
                     activeBullet = UnitType.FireBall;
-                    effectCoroutine = StartCoroutine(differedAction(bonus.LifeTime, delegate ()
+                    effectCoroutine = StartCoroutine(DifferedAction(bonus.LifeTime, delegate ()
                     {
                         activeBullet = UnitType.Bullet;
                     }));
@@ -163,7 +163,7 @@ public class Ship : DyingUnit
     /// activates weapon reload
     /// </summary>
     /// <returns></returns>
-    protected IEnumerator reload()
+    protected IEnumerator Reload()
     {
         yield return new WaitForSeconds(reloadTime);
         IsReload = true;
@@ -174,13 +174,13 @@ public class Ship : DyingUnit
     /// </summary>
     /// <param name="delay"></param>
     /// <param name="call"></param>
-    protected IEnumerator differedAction(float delay, Action call)
+    protected IEnumerator DifferedAction(float delay, Action call)
     {
         yield return new WaitForSeconds(delay);
         call();
     }
 
-    protected override void move(Vector3 target)
+    protected override void Move(Vector3 target)
     {
         if (transform.position == target)
         {
@@ -211,7 +211,7 @@ public class Ship : DyingUnit
     {
         if (moveActive)
         {
-            move(moveTarget);
+            Move(moveTarget);
         }
 
         if (transform.position.x < minX)

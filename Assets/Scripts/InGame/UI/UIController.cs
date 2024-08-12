@@ -27,7 +27,7 @@ public class UIController : MonoBehaviour
         set
         {
             isTouch = value;
-            setPanelState();
+            SetPanelState();
         }
     }
 
@@ -59,10 +59,10 @@ public class UIController : MonoBehaviour
 
     public void NewRecord()
     {       
-        StartCoroutine(blinkScore());
+        StartCoroutine(BlinkScore());
     }
 
-    private IEnumerator blinkScore()
+    private IEnumerator BlinkScore()
     {
         float i = 1f;
 
@@ -80,7 +80,7 @@ public class UIController : MonoBehaviour
 
         scoreTxt.enabled = true;
         isBlinking = false;
-        setPanelState();
+        SetPanelState();
     }
 
     private void PauseMenuPanel_OnDisable()
@@ -88,7 +88,7 @@ public class UIController : MonoBehaviour
         scorePanel.gameObject.SetActive(false);
     }
 
-    private void setPanelState()
+    private void SetPanelState()
     {
         if (isBlinking)
         {

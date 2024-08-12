@@ -83,11 +83,11 @@ public class Bullet : MovingUnit, IPoolable, IBeDestroyedAfterRange
     /// <returns>bullet's damage</returns>
     public virtual float GetDamage()
     {
-        disintegrate();
+        Disintegrate();
         return damage;
     }
 
-    protected override void disintegrate()
+    protected override void Disintegrate()
     {
         if ((object)this != null)
         {
@@ -99,14 +99,14 @@ public class Bullet : MovingUnit, IPoolable, IBeDestroyedAfterRange
     /// determine game object's movement
     /// </summary>
     /// <param name="target"> movement target position</param>
-    protected override void move(Vector3 target)
+    protected override void Move(Vector3 target)
     {
         Vector3 moveSpeedVector3 = target * (MoveSpeed * Time.deltaTime);
         transform.position += moveSpeedVector3;
 
         if (Vector3.Distance(transform.position, startPosition) >= range)
         {
-            disintegrate();
+            Disintegrate();
         }
     }
 
@@ -122,6 +122,6 @@ public class Bullet : MovingUnit, IPoolable, IBeDestroyedAfterRange
 
     protected void Update()
     {        
-        move(new Vector3(0, 1, 0));
+        Move(new Vector3(0, 1, 0));
     }
 }

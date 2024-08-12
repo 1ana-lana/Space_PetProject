@@ -70,27 +70,22 @@ public class Bonus : MovingUnit, IBeDestroyedAfterRange, IPoolable
        
     }
 
-    protected virtual void riseOnActiveBonus()
-    {
-        if (OnActiveBonus != null) OnActiveBonus(this, type, lifeTime);
-    }
-
     /// <summary>
     /// determine game object's movement
     /// </summary>
     /// <param name="direction"> movement target position</param>
-    protected override void move(Vector3 direction)
+    protected override void Move(Vector3 direction)
     {
         Vector3 moveSpeedVector3 = direction * (moveSpeed * Time.deltaTime);
         transform.position += moveSpeedVector3;
 
         if (Vector3.Distance(transform.position, startPosition) >= range)
         {
-            disintegrate();
+            Disintegrate();
         }
     }
 
-    protected override void disintegrate()
+    protected override void Disintegrate()
     {
         if ((object)this != null)
         {
@@ -104,9 +99,8 @@ public class Bonus : MovingUnit, IBeDestroyedAfterRange, IPoolable
         {
             Ship ship = collision.gameObject.GetComponent<Ship>();
             ship.UseBonus(this);
-            riseOnActiveBonus();
-
-            disintegrate();
+            OnActiveBonus?.Invoke(this, type, lifeTime);
+            Disintegrate();
         }
         
     }
@@ -119,6 +113,6 @@ public class Bonus : MovingUnit, IBeDestroyedAfterRange, IPoolable
 
     protected void Update()
     {
-        move(new Vector3(0, -1, 0));
+        Move(new Vector3(0, -1, 0));
     }    
 }

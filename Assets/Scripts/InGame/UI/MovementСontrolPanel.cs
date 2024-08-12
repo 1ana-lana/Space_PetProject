@@ -19,7 +19,7 @@ public class MovementСontrolPanel : MonoBehaviour, IPointerDownHandler, IDragHa
     /// </summary>
     public void OnDrag(PointerEventData eventData)
     {
-        riseOnTouch(eventData.position, true);
+        OnTouch?.Invoke(eventData.position, true);
     }
 
     /// <summary>
@@ -27,7 +27,7 @@ public class MovementСontrolPanel : MonoBehaviour, IPointerDownHandler, IDragHa
     /// </summary>
     public void OnPointerDown(PointerEventData eventData)
     {
-        riseOnTouch(eventData.position, true);
+        OnTouch?.Invoke(eventData.position, true);
     }
 
     /// <summary>
@@ -35,14 +35,6 @@ public class MovementСontrolPanel : MonoBehaviour, IPointerDownHandler, IDragHa
     /// </summary>
     public void OnPointerUp(PointerEventData eventData)
     {
-         riseOnTouch(eventData.position, false);
-    }
-
-    /// <summary>
-    /// Calls OnTouch event
-    /// </summary>
-    protected virtual void riseOnTouch(Vector2 eventDataPosition, bool isTouch)
-    {
-        if (OnTouch != null) OnTouch(eventDataPosition, isTouch);
+        OnTouch?.Invoke(eventData.position, false);
     }
 }

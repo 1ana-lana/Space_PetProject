@@ -34,7 +34,7 @@ public abstract class MovingUnit : DisintegratingUnit
     /// determine game object's movement
     /// </summary>
     /// <param name="direction"> movement target position</param>
-    protected abstract void move(Vector3 direction);
+    protected abstract void Move(Vector3 direction);
 
     protected virtual void Awake()
     {

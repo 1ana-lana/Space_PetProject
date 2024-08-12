@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -76,7 +77,7 @@ public class Spawner : MonoBehaviourSinglton<Spawner>
             isBonus = value;
             if (!isBonus)
             {
-                StartCoroutine(reloadBonusSpawn());
+                StartCoroutine(ReloadBonusSpawn());
             }
         }
     }
@@ -85,12 +86,12 @@ public class Spawner : MonoBehaviourSinglton<Spawner>
     /// indefinitely spawns waves with different count of asteroids. 
     /// spawnWavesDelay determines delay between them. 
     /// </summary>
-    private IEnumerator spawnWaves()
+    private IEnumerator SpawnWaves()
     {
         while (true)
         {
             int count = UnityEngine.Random.Range(minEnemysInWave, maxEnemysInWave);
-            StartCoroutine(spawnWithDelay(count));
+            StartCoroutine(SpawnWithDelay(count));
             yield return new WaitForSeconds(spawnWavesDelay);
         }
     }
@@ -100,11 +101,11 @@ public class Spawner : MonoBehaviourSinglton<Spawner>
     /// </summary>
     /// <param name="count">desired count of asteroids</param>
     /// <returns></returns>
-    private IEnumerator spawnWithDelay(int count)
+    private IEnumerator SpawnWithDelay(int count)
     {
         for (int i = 0; i < count; i++)
         {
-            chooseRandomSpawnPosition("Asteroid");
+            ChooseRandomSpawnPosition("Asteroid");
             yield return new WaitForSeconds(spawnDelay);
         }
     }
@@ -112,7 +113,7 @@ public class Spawner : MonoBehaviourSinglton<Spawner>
     /// <summary>
     /// realizes delay between bonus
     /// </summary>
-    private IEnumerator reloadBonusSpawn()
+    private IEnumerator ReloadBonusSpawn()
     {
         float i = UnityEngine.Random.Range(0, maxDelayBetweenBonus);
         yield return new WaitForSeconds(i);
@@ -122,7 +123,7 @@ public class Spawner : MonoBehaviourSinglton<Spawner>
     /// <summary>
     /// calculates random position for spawn
     /// </summary>
-    private void chooseRandomSpawnPosition(string tag)
+    private void ChooseRandomSpawnPosition(string tag)
     {
         Vector2 width = new Vector2(Screen.width, 0);
         Vector2 screenWidthPoint = Camera.main.ScreenToWorldPoint(width);
@@ -132,8 +133,8 @@ public class Spawner : MonoBehaviourSinglton<Spawner>
 
         if (tag == "Asteroid")
         {
-            Vector3 direction = chooseRandomTargetPosition(screenWidthPoint.x, startPoint);
-            instantiateRandomEnemyPrefab(startPoint, direction);
+            Vector3 direction = ChooseRandomTargetPosition(screenWidthPoint.x, startPoint);
+            InstantiateRandomEnemyPrefab(startPoint, direction);
         }          
     }
 
@@ -143,10 +144,10 @@ public class Spawner : MonoBehaviourSinglton<Spawner>
     /// <param name="halfWidth">half of Screen Width in a world points<param>
     /// <param name="spawnPoint">spawn point</param>
     /// <returns>target direction</returns>
-    private Vector3 chooseRandomTargetPosition(float halfWidth, Vector3 spawnPoint)
+    private Vector3 ChooseRandomTargetPosition(float halfWidth, Vector3 spawnPoint)
     {
-        float xrandomPosition = UnityEngine.Random.Range(-halfWidth, halfWidth);
-        Vector3 targetPoint = new Vector3(xrandomPosition, Vector3.down.y, spawnPoint.z);
+        float xRandomPosition = UnityEngine.Random.Range(-halfWidth, halfWidth);
+        Vector3 targetPoint = new Vector3(xRandomPosition, Vector3.down.y, spawnPoint.z);
 
         Vector3 targetVector = targetPoint - spawnPoint;
         Vector3 target = Vector3.Normalize(targetVector);
@@ -158,7 +159,7 @@ public class Spawner : MonoBehaviourSinglton<Spawner>
     /// spawns random asteroid from list
     /// </summary>
     /// <param name="startPoint">spawn position</param>
-    private void instantiateRandomEnemyPrefab(Vector3 startPoint, Vector3 direction)
+    private void InstantiateRandomEnemyPrefab(Vector3 startPoint, Vector3 direction)
     {
         int index = UnityEngine.Random.Range(enemyEnumInterval.First, enemyEnumInterval.Last + 1);
         UnitType type = (UnitType)index;
@@ -175,7 +176,7 @@ public class Spawner : MonoBehaviourSinglton<Spawner>
 
         asteroid.gameObject.SetActive(true);
 
-        asteroid.OnMurder += asteroid_OnMurder;
+        asteroid.OnMurder += AsteroidOnMurder;
     }
 
     public T InstantiatePrefab<T>(UnitType type, Vector3 position) where T : MonoBehaviour
@@ -186,41 +187,32 @@ public class Spawner : MonoBehaviourSinglton<Spawner>
     }
 
     /// <summary>
-    /// Calls OnEnemyMurder event
-    /// </summary>
-    /// <param name="value"></param>
-    protected virtual void riseOnEnemyMurder(int value)
-    {
-        if (OnEnemyMurder != null) OnEnemyMurder(value);
-    }
-
-    /// <summary>
     /// will call when asteroid will be destroyed
     /// </summary>
-    private void asteroid_OnMurder(DyingUnit obj)
+    private void AsteroidOnMurder(DyingUnit obj)
     {      
-        obj.OnMurder -= asteroid_OnMurder;
+        obj.OnMurder -= AsteroidOnMurder;
 
         Asteroid asteroid = obj as Asteroid;
 
-        riseOnEnemyMurder(asteroid.Points);
+        OnEnemyMurder?.Invoke(asteroid.Points);
 
         if (asteroid.IsBonus)
         {
-            spawnBonus(obj.transform.position);
+            SpawnBonus(obj.transform.position);
         }
     }
 
-    protected virtual void spawnBonus(Vector3 position)
+    protected virtual void SpawnBonus(Vector3 position)
     {
         int index = UnityEngine.Random.Range(bonusEnumInterval.First, bonusEnumInterval.Last+1);
         Bonus bonus = InstantiatePrefab<Bonus>((UnitType)index, position);
         bonus.gameObject.SetActive(true);
 
-        bonus.OnActiveBonus += bonus_OnActiveBonus;
+        bonus.OnActiveBonus += BonusOnActiveBonus;
     }
 
-    private void bonus_OnActiveBonus(Bonus bonus, UnitType type, int lifeTime)
+    private void BonusOnActiveBonus(Bonus bonus, UnitType type, int lifeTime)
     {
         int i = bonusIconPairs.FindIndex(x => x.Key == type);
 
@@ -231,11 +223,11 @@ public class Spawner : MonoBehaviourSinglton<Spawner>
         }
 
         bonusIconSpawner.AddBonusIcon(bonusIconPairs[i].Value, lifeTime);
-        bonus.OnActiveBonus -= bonus_OnActiveBonus;
+        bonus.OnActiveBonus -= BonusOnActiveBonus;
     }
 
     private void Start()
     {
-        StartCoroutine(spawnWaves());
+        StartCoroutine(SpawnWaves());
     }
 }

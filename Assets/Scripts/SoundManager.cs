@@ -63,7 +63,7 @@ public class SoundManager : MonoBehaviourSinglton<SoundManager>
 
         if (audioSource != null)
         {
-            instantiateSound(clipName);
+            InstantiateSound(clipName);
             return;
         }
 
@@ -71,12 +71,12 @@ public class SoundManager : MonoBehaviourSinglton<SoundManager>
 
         if (audioSource == null)
         {
-            audioSource = instantiateSound(clipName);
+            audioSource = InstantiateSound(clipName);
         }
         else
         {
             audioSource.Play();
-            addPlayingSoundTemporarily(audioSource);
+            AddPlayingSoundTemporarily(audioSource);
         }
 
         audioSource.loop = loop;
@@ -88,7 +88,7 @@ public class SoundManager : MonoBehaviourSinglton<SoundManager>
     /// to the instantiatedAudioSourcesList and temporarily to the currently playing AudioSources list)
     /// </summary>
     /// <param name="audioSource">Sound AudioSource</param>
-    private AudioSource instantiateSound(string clipName)
+    private AudioSource InstantiateSound(string clipName)
     {
         AudioSource audioSource = audioSources.Find(x => x.clip.name == clipName);
 
@@ -97,7 +97,7 @@ public class SoundManager : MonoBehaviourSinglton<SoundManager>
             audioSource = Instantiate(audioSource);
             audioSource.transform.SetParent(transform);
             instantiatedAudioSources.Add(audioSource);
-            addPlayingSoundTemporarily(audioSource);
+            AddPlayingSoundTemporarily(audioSource);
 
             return audioSource;
         }
@@ -113,10 +113,10 @@ public class SoundManager : MonoBehaviourSinglton<SoundManager>
     /// and remove it from the list after it will stop playing
     /// </summary>
     /// <param name="parSoundAudioSource">Sound AudioSource</param>
-    private void addPlayingSoundTemporarily(AudioSource parSoundAudioSource)
+    private void AddPlayingSoundTemporarily(AudioSource parSoundAudioSource)
     {
         playingSoundAudioSourcesList.Add(parSoundAudioSource);
-        StartCoroutine(removePlayingSoundFromList(parSoundAudioSource));
+        StartCoroutine(RemovePlayingSoundFromList(parSoundAudioSource));
     }
 
     /// <summary>
@@ -125,7 +125,7 @@ public class SoundManager : MonoBehaviourSinglton<SoundManager>
     /// </summary>
     /// <param name="parSoundAudioSource">Sound AudioSource</param>
     /// <returns></returns>
-    private IEnumerator removePlayingSoundFromList(AudioSource parSoundAudioSource)
+    private IEnumerator RemovePlayingSoundFromList(AudioSource parSoundAudioSource)
     {
         yield return new WaitForSeconds(parSoundAudioSource.clip.length);
         playingSoundAudioSourcesList.Remove(parSoundAudioSource);

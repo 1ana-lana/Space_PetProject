@@ -25,26 +25,26 @@ public static class HighScoreManager
         if (Rating != null)
         {
             Rating.Add(score);
-            sortRatingList();
-            removeExcess();
+            SortRatingList();
+            RemoveExcess();
 
             if (Rating.Contains(score))
             {
-                rewriteHightScore();
+                RewriteHightScore();
             }
         }
         else
         {
             Rating = new List<int>();
             Rating.Add(score);
-            rewriteHightScore();
+            RewriteHightScore();
         }
     }
 
     /// <summary>
     /// update sequence
     /// </summary>
-    private static void sortRatingList()
+    private static void SortRatingList()
     {
         IEnumerable<int> temp = Rating.Distinct();
         Rating = temp.ToList();
@@ -52,7 +52,7 @@ public static class HighScoreManager
         Rating.Reverse();
     }
 
-    private static void removeExcess()
+    private static void RemoveExcess()
     {
         for (int i = highScoreLength; i < Rating.Count; i++)
         {
@@ -60,12 +60,12 @@ public static class HighScoreManager
         }
     }
 
-    private static void rewriteHightScore()
+    private static void RewriteHightScore()
     {
-        save();
+        Save();
     }
 
-    private static void save()
+    private static void Save()
     {
         SaveAndLoad.Save(ratingSavePath, Rating);
     }

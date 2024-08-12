@@ -72,14 +72,14 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private int score = 0;
 
-    private void instance_OnEnemyMurder(int value)
+    private void Instance_OnEnemyMurder(int value)
     {
         score += value;
         uiController.UpdateScore(score);
-        checkrecord();
+        Checkrecord();
     }
 
-    private void checkrecord()
+    private void Checkrecord()
     {
         if (getRecord)
         {
@@ -106,7 +106,7 @@ public class GameController : MonoBehaviour
 
         movementСontrolPanel.OnTouch += MovementСontrolPanel_OnTouch;
 
-        Spawner.Instance.OnEnemyMurder += instance_OnEnemyMurder;
+        Spawner.Instance.OnEnemyMurder += Instance_OnEnemyMurder;
         ship.OnMurder += Ship_OnMurder;
 
         rating = HighScoreManager.Rating;

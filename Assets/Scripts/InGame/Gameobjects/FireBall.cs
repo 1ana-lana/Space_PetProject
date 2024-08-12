@@ -10,7 +10,7 @@ public class FireBall : Bullet
     public override float GetDamage()
     {
         AttackArea();
-        disintegrate();
+        Disintegrate();
         return 0;
     }
 

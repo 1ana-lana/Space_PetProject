@@ -109,21 +109,6 @@ public class Asteroid : DyingUnit, IPoolable, IBeDestroyedAfterRange
         getDamage = false;
     }
 
-    /// <summary>
-    /// determines game object's movement
-    /// </summary>
-    /// <param name="direction"> movement target position</param>
-    protected override void move(Vector3 direction)
-    {
-        Vector3 moveSpeedVector3 = direction * (moveSpeed * Time.deltaTime);
-        transform.position += moveSpeedVector3;
-
-        if (Vector3.Distance(transform.position, startPosition) >= range)
-        {
-            disintegrate();
-        }
-    }
-
     public override void SetDamage(float damage)
     {
         if (!isAlive)
@@ -137,7 +122,22 @@ public class Asteroid : DyingUnit, IPoolable, IBeDestroyedAfterRange
         }
     }
 
-    protected override void disintegrate()
+    /// <summary>
+    /// determines game object's movement
+    /// </summary>
+    /// <param name="direction"> movement target position</param>
+    protected override void Move(Vector3 direction)
+    {
+        Vector3 moveSpeedVector3 = direction * (moveSpeed * Time.deltaTime);
+        transform.position += moveSpeedVector3;
+
+        if (Vector3.Distance(transform.position, startPosition) >= range)
+        {
+            Disintegrate();
+        }
+    }
+
+    protected override void Disintegrate()
     {
         if ((object)this != null)
         {
@@ -145,7 +145,7 @@ public class Asteroid : DyingUnit, IPoolable, IBeDestroyedAfterRange
         }
     }
 
-    protected override void death()
+    protected override void Death()
     {
         isAlive = false;
 
@@ -153,9 +153,8 @@ public class Asteroid : DyingUnit, IPoolable, IBeDestroyedAfterRange
         effect.gameObject.SetActive(true);
         SoundManager.Instance.PlaySound(explosion.Sound);
 
-        riseOnMurder();
-
-        disintegrate();
+        CallOnMurderEvent(this);
+        Disintegrate();
     }
 
     /// <summary>
@@ -188,6 +187,6 @@ public class Asteroid : DyingUnit, IPoolable, IBeDestroyedAfterRange
 
     protected void Update()
     {
-        move(direction);
+        Move(direction);
     }
 }

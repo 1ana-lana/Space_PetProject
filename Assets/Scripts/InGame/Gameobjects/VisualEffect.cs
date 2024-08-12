@@ -43,7 +43,7 @@ public class VisualEffect : DisintegratingUnit, IPoolable
        
     }
 
-    protected override void disintegrate()
+    protected override void Disintegrate()
     {
         if ((object)this != null)
         {
@@ -51,13 +51,13 @@ public class VisualEffect : DisintegratingUnit, IPoolable
         }
     }
 
-    private IEnumerator off()
+    private IEnumerator Off()
     {
         yield return new WaitForSeconds(GetComponent<ParticleSystem>().main.duration);
-        disintegrate();
+        Disintegrate();
     }
     private void OnEnable()
     {
-        StartCoroutine(off());
+        StartCoroutine(Off());
     }
 }

@@ -52,12 +52,7 @@ public class BonusIcon : MonoBehaviour, IPoolable
         }
     }
 
-   protected virtual void riseOnFinish()
-    {
-        if (OnFinish != null) OnFinish(this);
-    }
-
-    private IEnumerator timer()
+    private IEnumerator Timer()
     {
         while (LifeTime > 0)
         {
@@ -66,11 +61,11 @@ public class BonusIcon : MonoBehaviour, IPoolable
             LifeTime -= 1;
         }
 
-        disintegrate();
-        riseOnFinish();
+        Disintegrate();
+        OnFinish?.Invoke(this);
     }
 
-    protected virtual void disintegrate()
+    protected virtual void Disintegrate()
     {
         if ((object)this != null)
         {
@@ -90,6 +85,6 @@ public class BonusIcon : MonoBehaviour, IPoolable
 
     private void Start()
     {
-        StartCoroutine(timer());
+        StartCoroutine(Timer());
     }
 }
