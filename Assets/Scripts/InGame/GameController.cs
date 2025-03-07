@@ -114,6 +114,8 @@ public class GameController : MonoBehaviour
 
     private void Ship_OnMurder(DyingUnit obj)
     {
+        ship.OnMurder -= Ship_OnMurder;
+
         movementСontrolPanel.OnTouch -= ship.MoveTo;
         fireControlPanel.OnTouch -= ship.Shot;
 

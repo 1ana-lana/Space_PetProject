@@ -182,7 +182,7 @@ public class Ship : DyingUnit
 
     protected override void Move(Vector3 target)
     {
-        if (transform.position == target)
+        if (transform.position.x == target.x)
         {
             moveActive = false;
         }
@@ -226,6 +226,18 @@ public class Ship : DyingUnit
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Shot();
+        }
+
+        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
+        {
+            moveTarget = new Vector3(maxX, transform.position.y, transform.position.z);
+            moveActive = true;
+        }
+
+        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
+        {
+            moveTarget = new Vector3(minX, transform.position.y, transform.position.z);
+            moveActive = true;
         }
     }
 }
