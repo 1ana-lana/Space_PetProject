@@ -1,2 +1,11 @@
-Космический шутер на выживание. Из астероидов выпадают бонусы: бессмертие, фаербол (уничтожает все астероиды в определенном радиусе), ускорение, уменьшение времени перезарядки. 
-Управление: нижняя UI панель для движения вправо-влево, стрельба — тап по остальной панели или нажатие пробела.
+![image](https://github.com/1ana-lana/Space_PetProject/issues/1#issue-2907927135.png)
+
+Endless Space Shooter – you earn points for destroying each asteroid.
+
+A mini-map in the top-right corner shows asteroid movement.
+
+Asteroids drop bonuses: immortality, fireball (destroys all asteroids within a certain radius), speed boost, and cooldown reduction.
+
+Controls:
+Move left/right: Bottom UI panel / A, D, Left Arrow, Right Arrow
+Shoot: Tap anywhere on the rest of the panel or press Space
